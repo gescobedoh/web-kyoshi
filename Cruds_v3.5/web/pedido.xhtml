@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Pedido</title>
+        <f:event type="preRenderView" listener="#{usuarioBean.verificarSesion()}" />
+    </h:head>
+
+    <h:body>
+        
+        <h:form enctype="multipart/form-data" id="formulario">
+            <p:layout style="min-width: 400px;min-height: 200px" fullPage="true">
+                <p:layoutUnit position="north">                    
+                    <p:graphicImage url="common/assets/home/header.JPG"/>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="200" minSize="40" maxSize="200" resizable="true">
+                    <h1 align="center"> <p:outputLabel value="MENU" /></h1>
+                    <p:menu>
+                        <p:submenu label="Ingrediente">
+                            <p:menuitem value="Registrar" action="ingrediente?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Pedido">
+                            <p:menuitem value="Registrar" action="pedido?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Producto">
+                            <p:menuitem value="Registrar" action="producto?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Tipo de Usuario">
+                            <p:menuitem value="Registrar" action="tipo?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Usuario">
+                            <p:menuitem value="Registrar" action="usuario?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="#{usuarioBean.usuariologeado()}">
+                            <p:menuitem actionListener ="#{usuarioBean.cerrarSesion()}" value="Cerrar Sesión" icon="ui-icon-power"  action="index?faces-redirect=true" />                     
+                        </p:submenu>
+                    </p:menu>
+                </p:layoutUnit>
+                
+                
+                <p:layoutUnit position="center">
+                    <h1 align="center"> <p:outputLabel value="PEDIDO" /></h1>
+                    <p:dataTable id="pedidos" value="#{pedidoBean.listapedidos}" var="pedido" paginator="true" rows="10" >
+                        
+                        <p:column headerText="ID" width="10" > 
+                            #{pedido.idPedido}
+                        </p:column>
+                        <p:column headerText="Cliente"> 
+                            #{pedido.usuario.nombreUsuario}
+                        </p:column>
+                        <p:column headerText="Promocion"> 
+                            #{pedido.promocionPedido}
+                        </p:column>
+                        <p:column headerText="Fecha"> 
+                            <h:outputText value="#{pedido.fechaPedido}">
+                                <f:convertDateTime type="date" dateStyle="default" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Precio(Soles)"> 
+                            #{pedido.preciofPedido}
+                        </p:column>
+                        <p:column headerText="Atencion"> 
+                            #{pedido.atenderPedido}
+                        </p:column>
+                        <p:column headerText="Operacion"> 
+                            <p:panelGrid columns="2">
+                                <p:commandLink value="Eliminar" actionListener="#{pedidoBean.eliminar(pedido.idPedido)}" update="pedidos">
+                                    <p:confirm header="Confirmación" message="¿Esta seguro de eliminar?" icon="ui-icon-alert" />
+                                </p:commandLink>
+                                <p:commandLink value="Actualizar" 
+                                               actionListener="#{pedidoBean.listarId(pedido.idPedido)}" 
+                                               update="formulario:field" 
+                                               oncomplete="PF('wfield').toggle();"/>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    
+
+                    <p:separator/>
+                    <p:fieldset legend="#{pedidoBean.titulo}" toggleable="true" toggleSpeed="500" collapsed="true" id="field" widgetVar="wfield" >
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Cliente"/>
+                                <p:selectOneMenu value="#{pedidoBean.pedido.usuario}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems  value="#{usuarioBean.listaUsuarios}" var="u" itemLabel="#{u.nombreUsuario}" itemValue="#{u}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Promocion"/>                                
+                                <p:selectOneMenu value="#{pedidoBean.pedido.promocionPedido}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems  value="#{pedidoBean.listapromociones}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                                </p:selectOneMenu> 
+                                                            
+                                <p:outputLabel for="inline" value="Fecha" />
+                                <p:calendar id="inline" value="#{pedidoBean.pedido.fechaPedido}" mode="inline" />
+                                
+                                <h:outputText value="Atencion" />
+                                <p:selectBooleanCheckbox value="#{pedidoBean.pedido.atenderPedido}" />
+                                
+                                <p:separator/>
+                                 <p:separator/>
+                                <p:outputLabel value="Producto"/>
+                                <p:selectOneMenu value="#{pedidoBean.producto}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems  value="#{pedidoBean.listaproductos}" var="p" itemLabel="#{p.nombreProducto}" itemValue="#{p}"/>
+                                </p:selectOneMenu> 
+                                <p:outputLabel value="Cantidad de Productos"/>
+                                <p:inputText value="#{pedidoBean.detalle.cantidadProducto}"/>
+                                <p:commandButton value="Agregar" actionListener="#{pedidoBean.agregar()}" update="seleccion" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:dataTable value="#{pedidoBean.listaSeleccion}" var="detalle"  id="seleccion" >
+                            <p:column headerText="Producto" >
+                                #{detalle.producto.nombreProducto}
+                            </p:column>
+                            <p:column headerText="Cantidad" >
+                                #{detalle.cantidadProducto}
+                            </p:column>
+                            <p:column headerText="Eliminar" >
+                                <p:commandLink value="Eliminar" actionListener="#{pedidoBean.eliminarpro(detalle)}" update="seleccion"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Guardar" actionListener="#{pedidoBean.operar()}" ajax="false" action="pedido?faces-redirect=true"/>                        
+                        <p:commandButton value="Cancelar"  action="pedido?faces-redirect=true" ajax="false" actionListener="#{pedidoBean.limpiar()}"/>                        
+                    </p:fieldset>
+                </p:layoutUnit>
+            </p:layout>
+            <p:ajaxStatus onstart="PF('wmodal').show();"  onsuccess="PF('wmodal').hide();"/>
+            <p:dialog widgetVar="wmodal" 
+                      modal="true" 
+                      draggable="false" 
+                      closable="false"
+                      resizable="false" 
+                      showHeader="false"
+                      >
+                cargando
+               
+            </p:dialog>
+        </h:form>
+    </h:body>  
+</html>
+
+

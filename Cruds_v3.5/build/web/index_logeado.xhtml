@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Kyoshi Sushi Bar And Grill</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="keywords" content=""/>
+        <meta name="description" content=""/>
+
+        <!-- animate css -->
+        <link rel="stylesheet" href="common/libs/css/animate.min.css"/>
+        <!-- bootstrap css -->
+        <link rel="stylesheet" href="common/libs/css/bootstrap.min.css"/>
+        <!-- font-awesome -->
+        <link rel="stylesheet" href="common/libs/css/font-awesome.min.css"/>
+        <!-- google font -->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,700,800' rel='stylesheet' type='text/css'/>
+        <link href='https://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'/>
+        <link href='https://fonts.googleapis.com/css?family=Alex+Brush' rel='stylesheet' type='text/css'/>
+        <!--fav-icon-->
+
+        <link rel="shortcut icon" href="common/assets/favicon/favicon.ico" type="image/x-icon"/>	
+        <!-- custom css -->
+        <link rel="stylesheet" href="common/libs/css/flipclock.css"/>
+        <link rel="stylesheet" href="common/libs/css/slider/nivo-slider.css" type="text/css" />
+        <link rel="stylesheet" href="common/libs/css/slider/default/default.css" type="text/css" /> 
+        <link rel="stylesheet" href="css/style.css"/>
+
+        <script type="text/javascript" src="common/libs/js/jquery.js"></script>
+        <script type="text/javascript" src="common/libs/js/flipclock.js"></script>
+        <script type="text/javascript" src="common/libs/js/jquery.countdown.min.js"></script>
+        <script src="common/libs/js/jquery.nivo.slider.pack.js" type="text/javascript"></script>
+        <script src="common/libs/js/parallax.js" type="text/javascript"></script>
+
+        <style>
+            body .flip-clock-wrapper ul li a div div.inn, body .flip-clock-small-wrapper ul li a div div.inn { color: #CCCCCC; background-color: #333333; } body .flip-clock-dot, body .flip-clock-small-wrapper .flip-clock-dot { background: #323434; } body .flip-clock-wrapper .flip-clock-meridium a, body .flip-clock-small-wrapper .flip-clock-meridium a { color: #323434; }
+        </style>
+    </h:head>
+    <h:form style="background-color: black">
+            <p:messages autoUpdate="true" showDetail="true" />
+            <p:outputLabel  value="  "/>
+            <p:outputLabel value=" Bienvenido: #{usuarioBean.usuariologeado()}" style="color: white"/>      
+            <p:commandButton actionListener ="#{usuarioBean.cerrarSesion()}" value="Cerrar Sesión" icon="ui-icon-power" style="float: right" action="index?faces-redirect=true" />
+    </h:form>
+    <h:form style="background-color: black">  
+            <p:commandButton value="Ir al Carrito" icon="ui-icon-cart" style="float: right" action="carrito?faces-redirect=true" />
+    </h:form>
+    <h:body>
+        <section id="divider">
+                <div class="container">
+                    <div class="row">
+                        <div class="clock-builder-output"></div>
+                    </div>
+                </div>
+        </section> 
+
+        <section class="parallax-window" data-parallax="scroll" id="home">
+            <div class="overlay">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 wow fadeIn" data-wow-delay="0.3s">
+                            <img src="common/assets/home/logo.jpg" class="logo" alt="logo img" width="150" height="150"/>
+                            <br/>
+                            <h1 class="text-upper">Kyoshi Sushi Bar and Grill</h1>
+                            <h3>San Borja - Lima</h3>
+                            <h4>Teléfono: 920 093 400</h4>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+            </div>
+        </section>	
+        <br/>
+        
+        
+        <section id="feature">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 wow fadeInLeft" data-wow-delay="0.6s">
+                        <h2 class="proposal-content text-uppercase">¿Quiénes Somos?</h2>
+                        <p>Kyoshi Sushi Bar and Grill es una PYME (pequeña y mediana empresa) dirigida al rubro de los alimentos preparados. Está empresa nació 
+                            debido a la gran demanda de los amantes del sushi, comida japonesa a base de pescado sazonado con arroz y sal. Kyoshi ofrece los 
+                            servicios de delivery por medio de facebook y cáterin, alimentación institucional, fiestas, eventos y presentaciones de diversa índole. 
+                            Siendo este su factor diferenciador ante las empresas competidoras.</p>
+                    </div>
+                    <div class="col-md-6 wow fadeInRight" data-wow-delay="0.6s">
+                        <img src="common/assets/home/ourproposal.jpg" class="img-responsive" alt="feature img"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="feature1">
+            <div class="container">
+                <div class="row">
+                    <div class="wow fadeInUp" data-wow-delay="0.6s">
+                        <h2 class="gallery-head text-uppercase">Promociones</h2>
+                        <div class='slider-wrapper theme-default'>
+                            <div class="ribbon"></div> 
+                            <div id="slider" class="nivoSlider">     
+                                <img src="common/assets/slider/slider1.png" alt="" />    
+                                <img src="common/assets/slider/slider2.png" alt="" />     
+                                <img src="common/assets/slider/slider3.png" alt="" />     
+                                <img src="common/assets/slider/slider4.png" alt="" /> 
+                            </div> 
+                        </div>		
+                    </div>
+                </div>					
+            </div>
+        </section>
+        <section id="contact">
+                <div class="overlay">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+                                <h2 class="text-uppercase">Contáctanos</h2>
+                                
+                                <address>
+                                    <p><i class="fa fa-map-marker"></i>San Borja - Lima</p>
+                                    <p><i class="fa fa-phone"></i>Puedes llamarnos al 920 093 400</p>
+                                    <p><i class="fa fa-calendar"></i> Atención de Lunes a Domingos de 12:00 - 21:00 </p>
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+        
+        <script type="text/javascript"> 
+                $(window).load(function() {
+                    $('#slider').nivoSlider(); 
+                }); 
+
+                $('.parallax-window').parallax({imageSrc: 'common/assets/banners/home-bg.jpg'});
+        </script>
+
+
+        <script type="text/javascript" src="common/libs/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="common/libs/js/wow.min.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+    </h:body>
+</html>

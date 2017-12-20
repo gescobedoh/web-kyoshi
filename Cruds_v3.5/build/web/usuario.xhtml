@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Usuario</title>
+        <f:event type="preRenderView" listener="#{usuarioBean.verificarSesion()}" />
+    </h:head>
+
+    <h:body>
+        
+        <h:form enctype="multipart/form-data" id="formulario">
+            
+            <p:layout style="min-width: 400px;min-height: 200px" fullPage="true">
+                <p:layoutUnit position="north">                    
+                    <p:graphicImage url="common/assets/home/header.JPG"/>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="200" minSize="40" maxSize="200" resizable="true">
+                    <h1 align="center"> <p:outputLabel value="MENU" /></h1>
+                    <p:menu>
+                        <p:submenu label="Ingrediente">
+                            <p:menuitem value="Registrar" action="ingrediente?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Pedido">
+                            <p:menuitem value="Registrar" action="pedido?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Producto">
+                            <p:menuitem value="Registrar" action="producto?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Tipo de Usuario">
+                            <p:menuitem value="Registrar" action="tipo?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Usuario">
+                            <p:menuitem value="Registrar" action="usuario?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="#{usuarioBean.usuariologeado()}">
+                            <p:menuitem actionListener ="#{usuarioBean.cerrarSesion()}" value="Cerrar Sesión" icon="ui-icon-power"  action="index?faces-redirect=true" />                     
+                        </p:submenu>
+                    </p:menu>
+                </p:layoutUnit>
+                
+                
+                <p:layoutUnit position="center">
+                    <h1 align="center"> <p:outputLabel value="USUARIO" /></h1>
+                    
+                    <p:inputText  value="#{usuarioBean.usbuscado.nombreUsuario}" placeholder="Buscar"/>
+                    <p:commandButton value="Buscar" actionListener="#{usuarioBean.busqueda()}" update="usuarios" />
+                    
+                    <p:dataTable id="usuarios" value="#{usuarioBean.listaUsuarios}" var="usuario" paginator="true" rows="10" >
+                        
+                        <p:column headerText="ID" width="10"> 
+                            #{usuario.idUsuario}
+                        </p:column>
+                        <p:column headerText="Nombre"> 
+                            #{usuario.nombreUsuario}
+                        </p:column>
+                        <p:column headerText="Apellido"> 
+                            #{usuario.apellidoUsuario}
+                        </p:column>
+                        <p:column headerText="Correo"> 
+                            #{usuario.correoUsuario}
+                        </p:column>
+                        <p:column headerText="Telefono"> 
+                            #{usuario.telefonoUsuario}
+                        </p:column>
+                        <p:column headerText="Contraseña"> 
+                            #{usuario.passwordUsuario}
+                        </p:column>
+                        <p:column headerText="Tipo"> 
+                            #{usuario.tipo.nombreTipo}
+                        </p:column>
+                        <p:column headerText="Operacion"> 
+                            <p:panelGrid columns="2">
+                                <p:commandLink value="Eliminar" actionListener="#{usuarioBean.eliminar(usuario.idUsuario)}" update="usuarios">
+                                    <p:confirm header="Confirmación" message="¿Esta seguro de eliminar?" icon="ui-icon-alert" />
+                                </p:commandLink>
+                                <p:commandLink value="Actualizar" 
+                                               actionListener="#{usuarioBean.listarId(usuario.idUsuario)}" 
+                                               update="formulario:field" 
+                                               oncomplete="PF('wfield').toggle();"/>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    
+
+                    <p:separator/>
+                    <p:fieldset legend="#{usuarioBean.titulo}" 
+                                toggleable="true" 
+                                toggleSpeed="500" 
+                                collapsed="true" 
+                                id="field" 
+                                widgetVar="wfield" >
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Datos de Usuario"/>
+                                <p:outputLabel value=" "/>
+                                <p:separator/>
+                                <p:separator/>
+                                <p:outputLabel value="Nombre"/>
+                                <p:inputText  value="#{usuarioBean.usuario.nombreUsuario}" />
+                                <p:outputLabel value="Apellido"/>
+                                <p:inputText  value="#{usuarioBean.usuario.apellidoUsuario}"/>
+                                <p:outputLabel value="Correo"/>
+                                <p:inputText  value="#{usuarioBean.usuario.correoUsuario}"/>
+                                <p:outputLabel value="Telefono (# de 7 a 9 caracteres)"/>
+                                <p:inputText  value="#{usuarioBean.usuario.telefonoUsuario}">                                
+                                </p:inputText>
+                                <p:outputLabel value="Contraseña"/>
+                                <p:inputText type="password" value="#{usuarioBean.usuario.passwordUsuario}"/>
+                                <p:outputLabel value="Tipo"/>
+                                <p:selectOneMenu value="#{usuarioBean.usuario.tipo}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems  value="#{usuarioBean.listaTipos}" var="t" itemLabel="#{t.nombreTipo}" itemValue="#{t}"/>
+                                </p:selectOneMenu> 
+                                <p:separator/>
+                                <p:separator/>
+                                <p:outputLabel value="Dirección" />
+                                <p:outputLabel value="(Hasta 3 direcciones)"/>
+                                <p:outputLabel for="basic" value="Distrito" />
+                                <p:selectOneListbox id="basic" value="#{usuarioBean.direccion.distritodirec}">
+                                    <f:selectItem itemLabel="San Borja" itemValue="San Borja" />
+                                    <f:selectItem itemLabel="San Isidro" itemValue="San Isidro" />
+                                    <f:selectItem itemLabel="Miraflores" itemValue="Miraflores" />
+                                    <f:selectItem itemLabel="Surco" itemValue="Surco" />
+                                </p:selectOneListbox>
+                                <p:outputLabel value="Calle"/>
+                                <p:inputText value="#{usuarioBean.direccion.calledirec}"/>
+                                <p:outputLabel value="Numero"/>
+                                <p:inputText value="#{usuarioBean.direccion.nrodirec}"/>
+                                <p:outputLabel value="Departamento"/>
+                                <p:inputText value="#{usuarioBean.direccion.dptodirec}"/>
+                                <p:commandButton value="Agregar" actionListener="#{usuarioBean.agregar()}" update="seleccion" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+                        <p:dataTable value="#{usuarioBean.listaDirecciones}" var="direccion"  id="seleccion" >
+                            <p:column headerText="Distrito" >
+                                #{direccion.distritodirec}
+                            </p:column>
+                            <p:column headerText="Calle" >
+                                #{direccion.calledirec}
+                            </p:column>
+                            <p:column headerText="Numero" >
+                                #{direccion.nrodirec}
+                            </p:column>
+                            <p:column headerText="Departamento" >
+                                #{direccion.dptodirec}
+                            </p:column>
+                            <p:column headerText="Eliminar" >
+                                <p:commandLink value="Eliminar" actionListener="#{usuarioBean.eliminardir(direccion)}" update="seleccion"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+                        <p:commandButton value="Guardar" actionListener="#{usuarioBean.operar()}" ajax="false" action="usuario?faces-redirect=true"/>                        
+                        <p:commandButton value="Cancelar"  action="usuario?faces-redirect=true" ajax="false" actionListener="#{usuarioBean.limpiar()}"/>                        
+                    </p:fieldset>
+                </p:layoutUnit>
+            </p:layout>
+            <p:ajaxStatus onstart="PF('wmodal').show();"  onsuccess="PF('wmodal').hide();"/>
+            <p:dialog widgetVar="wmodal" 
+                      modal="true" 
+                      draggable="false" 
+                      closable="false"
+                      resizable="false" 
+                      showHeader="false"
+                      >
+                cargando
+               
+            </p:dialog>
+        </h:form>
+    </h:body>  
+</html>
+

@@ -1,0 +1,78 @@
+table,th,td{
+	border: 2px solid black;
+	border-collapse: collapse;
+	width: 1050px;
+	text-align: center;	
+	margin: auto;
+	font-size: 18px;
+}
+th {
+    height: 40px;
+    background-color: blue;
+    color: white;
+}
+td{
+	height: 30px;
+}
+
+h1{
+	color: red;
+}
+
+.btnprimary{
+	background-color: red;
+    border: 1px solid black;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 19px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.cerrar{
+	text-align: right;
+}
+.cerrarb{
+	margin-right: 10px;
+	margin-top: 8px;
+}
+.cambiartabs{
+	padding: 10px 16px;
+	font-size: 17px;
+}
+
+body{
+	text-align: center;
+}
+
+.bienvenida{
+    text-align: left;
+    font-size: 25px;
+    margin-left: 10px;
+    margin-top: -26px;
+}
+.cabeza{
+    background-color: black;
+    color: white;
+}
+.pie{
+	background-color: black;
+    color: white;
+    position:absolute;
+   	bottom:0;
+}
+
+.forma{
+	margin-top: -22px;
+}
+
+footer{
+	background: black;
+	color: white;
+	padding: 1px;
+	text-align: center;
+    margin-top: 20%;
+}

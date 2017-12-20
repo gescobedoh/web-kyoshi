@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Carrito</title>
+    </h:head>
+
+    <h:body>
+        
+        <h:form enctype="multipart/form-data" id="formulario">
+            <p:layout style="min-width: 400px;min-height: 200px" fullPage="true">
+                <p:layoutUnit position="north">                    
+                    <p:graphicImage url="common/assets/home/header.JPG"/>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="200" minSize="40" maxSize="200" resizable="true">
+                    <h1 align="center"> <p:outputLabel value="MENU" /></h1>
+                    <p:menu>
+                        <p:submenu label="#{usuarioBean.usuariologeado()}">
+                            <p:menuitem actionListener ="#{usuarioBean.cerrarSesion()}" value="Cerrar Sesión" icon="ui-icon-power"  action="index?faces-redirect=true" />                     
+                        </p:submenu>
+                    </p:menu>
+                </p:layoutUnit>
+                
+                
+                <p:layoutUnit position="center">                    
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    
+                    <h1 align="center"> <p:outputLabel value="CATALOGO" /></h1>
+                    <p:dataTable id="productos" value="#{productoBean.listaproductos}" var="producto">
+                                                
+                        <p:column headerText="Nombre"> 
+                            #{producto.nombreProducto}
+                        </p:column>
+                        <p:column headerText="Precio"> 
+                            #{producto.precioProducto}
+                        </p:column>
+                        <p:column headerText="Tipo"> 
+                            #{producto.tipoProducto}
+                        </p:column>
+                        <p:column headerText="Foto" style="text-align: center"> 
+                            <p:graphicImage value="/imagen/#{producto.idProducto}" height="60" width="45" />
+                        </p:column>                        
+                    </p:dataTable>
+                    
+                    <h1 align="center"> <p:outputLabel value="ARMA TU CARRITO" /></h1>
+                    <p:separator/>
+                    <p:fieldset legend="Agregar a carrito" id="field" widgetVar="wfield" collapsed="true" toggleable="true">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Cliente #{usuarioBean.currentUser().nombreUsuario}"/>                                
+                                <p:commandButton value="Si, soy yo" actionListener="#{usuarioBean.setUsuarioLogeado()}"/>     
+                                
+                                <p:separator/>
+                                 <p:separator/>
+                                <p:outputLabel value="Producto"/>
+                                <p:selectOneMenu value="#{pedidoBean.producto}" converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems  value="#{pedidoBean.listaproductos}" var="p" itemLabel="#{p.nombreProducto}" itemValue="#{p}"/>
+                                </p:selectOneMenu> 
+                                <p:outputLabel value="Cantidad de Productos"/>
+                                <p:inputText value="#{pedidoBean.detalle.cantidadProducto}"/>
+                                <p:commandButton value="Agregar" actionListener="#{pedidoBean.agregar()}" update="seleccion" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:dataTable value="#{pedidoBean.listaSeleccion}" var="detalle"  id="seleccion" >
+                            <p:column headerText="Producto" >
+                                #{detalle.producto.nombreProducto}
+                            </p:column>
+                            <p:column headerText="Cantidad" >
+                                #{detalle.cantidadProducto}
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Realizar pedido" actionListener="#{pedidoBean.operardelcarrito(usuarioBean.currentUser())}" ajax="false" action="carrito?faces-redirect=true" process="field"/>                        
+                        <p:commandButton value="Cancelar"  action="carrito?faces-redirect=true" ajax="false" actionListener="#{pedidoBean.limpiar()}"/>                        
+                    </p:fieldset>
+                </p:layoutUnit>
+            </p:layout>
+            <p:ajaxStatus onstart="PF('wmodal').show();"  onsuccess="PF('wmodal').hide();"/>
+            <p:dialog widgetVar="wmodal" 
+                      modal="true" 
+                      draggable="false" 
+                      closable="false"
+                      resizable="false" 
+                      showHeader="false"
+                      >
+                cargando               
+            </p:dialog>
+        </h:form>
+    </h:body>  
+</html>

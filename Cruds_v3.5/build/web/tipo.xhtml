@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Tipo de Usuario</title>
+        <f:event type="preRenderView" listener="#{usuarioBean.verificarSesion()}" />
+    </h:head>
+    <h:body>
+        
+        <h:form id="form">
+            <p:layout style="min-width: 400px;min-height: 200px" fullPage="true" >
+                <p:layoutUnit position="west" size="200" minSize="40" maxSize="200" resizable="true">
+                    <p:layoutUnit position="north">                    
+                    <p:graphicImage url="common/assets/home/header.JPG"/>
+                </p:layoutUnit>
+                    <h1 align="center"> <p:outputLabel value="MENU" /></h1>
+                    <p:menu>
+                        <p:submenu label="Ingrediente">
+                            <p:menuitem value="Registrar" action="ingrediente?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Pedido">
+                            <p:menuitem value="Registrar" action="pedido?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Producto">
+                            <p:menuitem value="Registrar" action="producto?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Tipo de Usuario">
+                            <p:menuitem value="Registrar" action="tipo?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="Usuario">
+                            <p:menuitem value="Registrar" action="usuario?faces-redirect=true" />                     
+                        </p:submenu>
+                        <p:submenu label="#{usuarioBean.usuariologeado()}">
+                            <p:menuitem actionListener ="#{usuarioBean.cerrarSesion()}" value="Cerrar Sesión" icon="ui-icon-power"  action="index?faces-redirect=true" />                     
+                        </p:submenu>
+                    </p:menu>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    <h1 align="center"> <p:outputLabel value="TIPO" /></h1>
+                    <p:dataTable value="#{tipoBean.listaTipos}" var="tipo" paginator="true" rows="10" id="tabla">
+                        <p:column headerText="ID" width="10"> 
+                            #{tipo.idTipo}
+                        </p:column>
+                        <p:column headerText="Nombre"> 
+                            #{tipo.nombreTipo}
+                        </p:column>
+                        <p:column headerText="Operacion"> 
+                            <p:panelGrid columns="2"  style="border: none">
+                                <p:commandLink value="Modificar" oncomplete="PF('wdialogo').show();" actionListener="#{tipoBean.agregar(tipo)}" update="form:dialogo"/>
+                                <p:commandLink value="Eliminar"  actionListener="#{tipoBean.eliminar(tipo)}" update="form:tabla"/>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Nuevo" oncomplete="PF('wdialogo').show();" actionListener="#{tipoBean.limpiar()}" update="form:dialogo" />
+                    <p:dialog modal="true" 
+                              id="dialogo" 
+                              widgetVar="wdialogo" 
+                              header="#{tipoBean.tituloDialogo}"
+                              appendTo="@(body)" 
+                              closeOnEscape="true" 
+                              draggable="true" 
+                              resizable="true" 
+                              hideEffect="explode"> 
+                        <h:panelGrid id="grid" columns="1" > 
+                            <p:outputLabel value="Nombre" for="txtnombre"/>
+                            <p:inputText  id="txtnombre" value="#{tipoBean.tipo.nombreTipo}" required="true"/>
+                            <h:message for="txtnombre" styleClass="RED" style="color: red" />
+                            <p:commandButton value="Aceptar" action="tipo?faces-redirect=true" actionListener="#{tipoBean.aceptar()}" partialSubmit="true" process="grid" update="grid"/>
+                            <p:commandButton value="Cerrar" onclick="PF('wdialogo').hide();"/>
+                        </h:panelGrid>
+                    </p:dialog>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </h:body>
+</html>
+

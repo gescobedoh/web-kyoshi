@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Crear Cuenta</title>
+    </h:head>
+
+    <h:body>
+        <h:form enctype="multipart/form-data" id="formulario">
+            <p:layout style="min-width: 400px;min-height: 200px" fullPage="true">
+                <p:layoutUnit position="north">                    
+                    <p:graphicImage url="common/assets/home/header.JPG"/>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>    
+                    
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Datos de Usuario"/>
+                                <p:outputLabel value=" "/>
+                                <p:separator/>
+                                <p:separator/>
+                                <p:outputLabel value="Nombre"/>
+                                <p:inputText  value="#{usuarioBean.usuario.nombreUsuario}" />
+                                <p:outputLabel value="Apellido"/>
+                                <p:inputText  value="#{usuarioBean.usuario.apellidoUsuario}"/>
+                                <p:outputLabel value="Correo"/>
+                                <p:inputText  value="#{usuarioBean.usuario.correoUsuario}"/>
+                                <p:outputLabel value="Telefono"/>
+                                <p:inputText  value="#{usuarioBean.usuario.telefonoUsuario}">
+                                <f:validateLength minimum="7" maximum="9"/>
+                                </p:inputText>
+                                <p:outputLabel value="Contraseña"/>
+                                <p:inputText type="password" value="#{usuarioBean.usuario.passwordUsuario}"/>
+                                
+                                <p:separator/>
+                                <p:separator/>
+                                <p:outputLabel value="Dirección" />
+                                <p:outputLabel value="(Hasta 3 direcciones)"/>
+                                <p:separator/>
+                                <p:separator/>
+                                <p:outputLabel for="basic" value="Distrito" />
+                                <p:selectOneListbox id="basic" value="#{usuarioBean.direccion.distritodirec}">
+                                    <f:selectItem itemLabel="San Borja" itemValue="San Borja" />
+                                    <f:selectItem itemLabel="San Isidro" itemValue="San Isidro" />
+                                    <f:selectItem itemLabel="Miraflores" itemValue="Miraflores" />
+                                    <f:selectItem itemLabel="Surco" itemValue="Surco" />
+                                </p:selectOneListbox>
+                                <p:outputLabel value="Calle"/>
+                                <p:inputText value="#{usuarioBean.direccion.calledirec}"/>
+                                <p:outputLabel value="Numero"/>
+                                <p:inputText value="#{usuarioBean.direccion.nrodirec}"/>
+                                <p:outputLabel value="Departamento"/>
+                                <p:inputText value="#{usuarioBean.direccion.dptodirec}"/>
+                                <p:separator/>
+                                <p:separator/> 
+                                <p:commandButton value="Agregar" actionListener="#{usuarioBean.agregar()}" update="seleccion" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+                        <p:dataTable value="#{usuarioBean.listaDirecciones}" var="direccion"  id="seleccion" >
+                            <p:column headerText="Distrito" >
+                                #{direccion.distritodirec}
+                            </p:column>
+                            <p:column headerText="Calle" >
+                                #{direccion.calledirec}
+                            </p:column>
+                            <p:column headerText="Numero" >
+                                #{direccion.nrodirec}
+                            </p:column>
+                            <p:column headerText="Departamento" >
+                                #{direccion.dptodirec}
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+                        <p:commandButton value="Guardar" actionListener="#{usuarioBean.operarRegistrar()}" ajax="false" action="index?faces-redirect=true"/>                        
+                        <p:commandButton value="Cancelar"  action="index?faces-redirect=true" ajax="false" actionListener="#{usuarioBean.limpiar()}"/>                        
+                    
+                </p:layoutUnit>
+            </p:layout>
+            <p:ajaxStatus onstart="PF('wmodal').show();"  onsuccess="PF('wmodal').hide();"/>
+            <p:dialog widgetVar="wmodal" 
+                      modal="true" 
+                      draggable="false" 
+                      closable="false"
+                      resizable="false" 
+                      showHeader="false"
+                      >
+                cargando
+               
+            </p:dialog>
+        </h:form>
+    </h:body>  
+</html>
